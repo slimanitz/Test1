@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { XMLParser } = require("fast-xml-parser");
 const { parseAsync } = require("json2csv");
+const truncate = require("truncate");
 var fs = require("fs");
 
 const options = {
@@ -21,7 +22,7 @@ const parseData = (data) => {
     return {
       id: getId(e.guid),
       Title: e.title,
-      Description: truncateString(e.description, 68),
+      Description: truncateString(e.description),
       "Article URL": e.link,
       "Image URL": e.enclosure["@_url"],
       "Image Size": Math.round(parseInt(e.enclosure["@_length"]) * 0.001),
@@ -57,11 +58,9 @@ const createCsvFile = (data) => {
   });
 };
 
-const truncateString = (data, num) => {
-  if (data.length <= num) {
-    return str;
-  }
-  return data.slice(0, num) + "...";
+const truncateString = (data) => {
+  if (data.length <= 68) return str;
+  return data.substr(0, data.lastIndexOf(" ", 68)) + "...";
 };
 
 const getId = (idString) => {
