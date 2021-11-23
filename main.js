@@ -59,8 +59,8 @@ const createCsvFile = (data) => {
 };
 
 const truncateString = (data) => {
-  if (data.length <= 68) return str;
-  return data.substr(0, data.lastIndexOf(" ", 68)) + "...";
+  if (data.length <= 68) return data;
+  return data.slice(0, data.indexOf(" ", 68)) + "...";
 };
 
 const getId = (idString) => {
